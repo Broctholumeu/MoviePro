@@ -38,7 +38,7 @@ namespace MoviePro
             services.AddControllersWithViews();
 
 
-            //Added below to tie into services folder; every time above function is called it creates a new IMAGE SERVICE to be used
+            //Added below to tie into services folder
             services.AddScoped<IImageService, BasicImageService>();
         }
 
