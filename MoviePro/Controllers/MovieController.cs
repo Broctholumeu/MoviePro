@@ -102,7 +102,7 @@ namespace MoviePro.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MovieId,Title,TagLine,Overview,ReleaseDate,Poster,BGImage,Trailer")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,MovieId,Title,TagLine,Overview,ReleaseDate,Poster,BGImage,BGContentType,Trailer")] Movie movie, IFormFile NewPoster, IFormFile NewBGImage)
         {
             if (id != movie.Id)
             {
@@ -113,6 +113,19 @@ namespace MoviePro.Controllers
             {
                 try
                 {
+                    //Add below to capture image
+                    if (NewPoster is not null)
+                    {
+                        movie.ContentType = _imageService.RecordContentType(NewPoster);
+                        movie.Poster = await _imageService.EncodePosterAsync(NewPoster);
+                    }
+                    if (NewBGImage is not null)
+                    {
+                        movie.BGContentType = _imageService.RecordContentType(NewBGImage);
+                        movie.BGImage = await _imageService.EncodePosterAsync(NewBGImage);
+                    }
+
+
                     _context.Update(movie);
                     await _context.SaveChangesAsync();
                 }
