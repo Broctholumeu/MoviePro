@@ -2,21 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoviePro.Data;
 using MoviePro.Models;
+using MoviePro.Services;
 
 namespace MoviePro.Controllers
 {
     public class MovieController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public MovieController(ApplicationDbContext context)
+        public MovieController(ApplicationDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         // GET: Movie
@@ -56,10 +60,18 @@ namespace MoviePro.Controllers
         [ValidateAntiForgeryToken]
 
         //"async"(runs on different thread) method call needs an "await" method call to function fully
-        public async Task<IActionResult> Create([Bind("Id,MovieId,Title,TagLine,Overview,ReleaseDate,Poster,ContentType,BGImage,BGContentType,Trailer")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,MovieId,Title,TagLine,Overview,ReleaseDate,Trailer")] Movie movie, IFormFile Poster, IFormFile BGImage)
         {
             if (ModelState.IsValid)
             {
+                //next lines are added after adding end items above to approve accepting images on page
+                movie.ContentType = _imageService.RecordContentType(Poster);
+                movie.Poster = await _imageService.EncodePosterAsync(Poster);
+
+                movie.BGContentType = _imageService.RecordContentType(BGImage);
+                movie.BGImage = await _imageService.EncodePosterAsync(BGImage);
+
+
                 _context.Add(movie);
 
                 //App needs this otherwise data is lost
