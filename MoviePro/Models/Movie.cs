@@ -33,6 +33,7 @@ namespace MoviePro.Models
         public string Trailer { get; set; }
 
         public ICollection<Cast> Cast { get; set; } = new HashSet<Cast>();
+        public ICollection<Crew> Crew { get; set; } = new HashSet<Crew>();
 
 
 
