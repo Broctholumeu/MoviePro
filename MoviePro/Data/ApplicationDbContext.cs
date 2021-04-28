@@ -15,8 +15,7 @@ namespace MoviePro.Data
         }
 
         public DbSet<MoviePro.Models.Movie> Movie { get; set; }
-        public DbSet<MoviePro.Models.Movie> Cast { get; set; }
-        public DbSet<MoviePro.Models.Cast> Cast_1 { get; set; }
+        public DbSet<MoviePro.Models.Cast> Cast { get; set; }
         public DbSet<MoviePro.Models.Crew> Crew { get; set; }
     }
 }

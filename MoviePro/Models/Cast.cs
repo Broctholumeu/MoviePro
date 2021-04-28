@@ -11,6 +11,7 @@ namespace MoviePro.Models
 
         public int Id { get; set; }
         //Below helps to identify parent (movie) and the child (id) from the other model
+        [Display(Name = "Movie")]
         public int MovieId { get; set; }
 
         //TMDB castID used to identify cast across movies
@@ -27,7 +28,7 @@ namespace MoviePro.Models
         public byte[] Profile { get; set; }
         public string ContentType { get; set; }
 
-
+        public Movie Movie { get; set; }
 
     }
 }

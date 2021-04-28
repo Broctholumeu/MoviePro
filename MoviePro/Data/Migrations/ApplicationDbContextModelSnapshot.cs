@@ -2,18 +2,16 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviePro.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace MoviePro.data.migration
+namespace MoviePro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210426205851_005-CastInfo")]
-    partial class _005CastInfo
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -254,7 +252,42 @@ namespace MoviePro.data.migration
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Cast_1");
+                    b.ToTable("Cast");
+                });
+
+            modelBuilder.Entity("MoviePro.Models.Crew", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("ContentType")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CrewId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Job")
+                        .HasColumnType("text");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("Profile")
+                        .HasColumnType("bytea");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("Crew");
                 });
 
             modelBuilder.Entity("MoviePro.Models.Movie", b =>
@@ -352,8 +385,19 @@ namespace MoviePro.data.migration
 
             modelBuilder.Entity("MoviePro.Models.Cast", b =>
                 {
-                    b.HasOne("MoviePro.Models.Movie", null)
+                    b.HasOne("MoviePro.Models.Movie", "Movie")
                         .WithMany("Cast")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("MoviePro.Models.Crew", b =>
+                {
+                    b.HasOne("MoviePro.Models.Movie", null)
+                        .WithMany("Crew")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -362,6 +406,8 @@ namespace MoviePro.data.migration
             modelBuilder.Entity("MoviePro.Models.Movie", b =>
                 {
                     b.Navigation("Cast");
+
+                    b.Navigation("Crew");
                 });
 #pragma warning restore 612, 618
         }

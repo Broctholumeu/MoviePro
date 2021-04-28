@@ -2,16 +2,18 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviePro.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace MoviePro.data.migration
+namespace MoviePro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210428180923_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,7 +254,7 @@ namespace MoviePro.data.migration
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Cast_1");
+                    b.ToTable("Cast");
                 });
 
             modelBuilder.Entity("MoviePro.Models.Crew", b =>
@@ -284,6 +286,8 @@ namespace MoviePro.data.migration
                         .HasColumnType("bytea");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
 
                     b.ToTable("Crew");
                 });
@@ -390,9 +394,20 @@ namespace MoviePro.data.migration
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MoviePro.Models.Crew", b =>
+                {
+                    b.HasOne("MoviePro.Models.Movie", null)
+                        .WithMany("Crew")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MoviePro.Models.Movie", b =>
                 {
                     b.Navigation("Cast");
+
+                    b.Navigation("Crew");
                 });
 #pragma warning restore 612, 618
         }
