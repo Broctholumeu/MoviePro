@@ -60,7 +60,7 @@ namespace MoviePro.Controllers
         [ValidateAntiForgeryToken]
 
         //"async"(runs on different thread) method call needs an "await" method call to function fully
-        public async Task<IActionResult> Create([Bind("Id,MovieId,Title,TagLine,Overview,ReleaseDate,Trailer")] Movie movie, IFormFile Poster, IFormFile BGImage)
+        public async Task<IActionResult> Create([Bind("Id,MovieId,Title,TagLine,Overview,ReleaseDate,Trailer,Rating")] Movie movie, IFormFile Poster, IFormFile BGImage)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +102,7 @@ namespace MoviePro.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MovieId,Title,TagLine,Overview,ReleaseDate,Poster,BGImage,BGContentType,Trailer")] Movie movie, IFormFile NewPoster, IFormFile NewBGImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,MovieId,Title,TagLine,Overview,ReleaseDate,Poster,BGImage,BGContentType,Trailer,Rating")] Movie movie, IFormFile NewPoster, IFormFile NewBGImage)
         {
             if (id != movie.Id)
             {
