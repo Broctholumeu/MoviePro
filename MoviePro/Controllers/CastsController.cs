@@ -44,7 +44,7 @@ namespace MoviePro.Controllers
             {
                 return NotFound();
             }
-            ViewData["MovieId"] = new SelectList(_context.Movie, "ID", "Title");
+            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Title");
             return View(cast);
         }
 
@@ -90,7 +90,7 @@ namespace MoviePro.Controllers
             {
                 return NotFound();
             }
-            ViewData["MovieId"] = new SelectList(_context.Movie, "ID", "Title", cast.MovieId);
+            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Title", cast.MovieId);
             return View(cast);
         }
 
@@ -133,7 +133,7 @@ namespace MoviePro.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MovieId"] = new SelectList(_context.Movie, "ID", "Title", cast.MovieId);
+            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Title", cast.MovieId);
             return View(cast);
         }
 
